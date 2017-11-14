@@ -57,13 +57,39 @@ aws iam get-role \
 
 ### Install the `echo` function
 
+Generate a `.zip` of the source code in `package.zip`:
+
 ```bash
-# TBD
+# Generate package.zip
+zip package echo.py
+```
+
+Copy `package.zip` to an S3 bucket that you own:
+
+```bash
+# Copy package.zip to your S3 bucket
+aws s3 cp package.zip s3://${YOUR_AWS_S3_BUCKET}/lambda/
+```
+
+Finally, create the function, remember to specify the `Arn` of your `lambda-default` role:
+
+```bash
+# Create your function
+aws lambda create-function \
+    --publish \
+    --runtime python2.7 \
+    --role ${YOUR_ARN_LAMBDA_DEFAULT_ROLE} \
+    --handler echo.handler \
+    --function-name echo \
+    --code S3Bucket=${YOUR_AWS_S3_BUCKET},S3Key=lambda/package.zip
 ```
 
 ## Usage
 
+Invoke using `aws lambda invoke`:
+
 ```bash
+# Invoke the function and save the output to output.txt
 aws lambda invoke --function-name echo --payload '["hello", "world"]' output.txt
 ```
 
