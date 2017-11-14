@@ -1,17 +1,13 @@
 # `echo`
 
-A simple AWS Lambda function
+A simple AWS Lambda function.
 
-## Usage
+## Installation
 
 1. Sign up for AWS Lambda
-1. Create credentials using AWS IAM
 1. Install and configure the `aws` command-line client
-1. Create a `default` role
+1. Create a `lambda-default` role
 1. Install the `echo` function
-1. Invoke the `echo` function
-
-## Detailed usage
 
 ### Sign up for AWS Lambda
 
@@ -43,7 +39,7 @@ Use `aws iam create-role` and `aws iam attach-role-policy` to create the role an
 # Create the role
 aws iam create-role \
     --role-name lambda-default \
-    --assume-role-policy-document file://.aws/policies.json \
+    --assume-role-policy-document file://.aws/lambda-default-role-policy.json \
     --description "Lambda execution role"
 
 # Attach the policy to the role just created
@@ -65,8 +61,7 @@ aws iam get-role \
 # TBD
 ```
 
-
-### Invoke the `echo` function
+## Usage
 
 ```bash
 aws lambda invoke --function-name echo --payload '["hello", "world"]' output.txt
